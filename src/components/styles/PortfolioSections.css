@@ -124,13 +124,121 @@
   font-size: 18px;
 }
 
-.difficulty-bars,
-.stats-mini-grid {
-  display: grid;
+.stats-hero-row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  margin: 34px 0 26px;
+}
+
+.stats-hero-secondary strong {
+  font-size: 36px !important;
+  line-height: 36px !important;
+}
+
+.difficulty-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.difficulty-bar-row {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-.difficulty-bars div,
+.diff-label {
+  width: 65px;
+  font-size: 14px;
+  color: #b9c0c6;
+  flex-shrink: 0;
+}
+
+.diff-progress {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.diff-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+
+.diff-easy { background: #22c55e; }
+.diff-medium { background: #f59e0b; }
+.diff-hard { background: #ef4444; }
+
+.diff-count {
+  font-size: 13px;
+  color: #9ca3af;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: right;
+}
+
+.diff-count b {
+  color: #fff;
+  font-size: 15px;
+}
+
+/* Charts */
+.stats-chart-container {
+  margin-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 16px;
+}
+
+.stats-chart-canvas {
+  width: 100%;
+  height: 180px;
+  display: block;
+}
+
+/* Codeforces Stats Grid */
+.cf-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.cf-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cf-stat-icon {
+  font-size: 20px;
+}
+
+.cf-stat-label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.cf-stat-box strong {
+  font-size: 28px;
+  color: var(--accentColor);
+}
+
+.stats-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
 .stats-mini-grid span {
   min-height: 54px;
   display: flex;
@@ -143,15 +251,9 @@
   color: #b9c0c6;
 }
 
-.difficulty-bars b,
 .stats-mini-grid b {
   color: #fff;
   font-size: 22px;
-}
-
-.stats-mini-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 18px;
 }
 
 .stats-mini-grid-large {
