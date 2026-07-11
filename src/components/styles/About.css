@@ -1,0 +1,248 @@
+.about-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  opacity: 1;
+  min-height: var(--vh);
+  width: var(--cWidth);
+  margin: auto;
+  gap: 34px;
+  padding: 80px 0;
+  box-sizing: border-box;
+}
+
+.about-me {
+  width: 760px;
+  max-width: 100%;
+}
+
+.about-me h3 {
+  font-size: 25px;
+  text-transform: uppercase;
+  letter-spacing: 7px;
+  font-weight: 400;
+  color: var(--accentColor);
+}
+
+.about-me p {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: 0.3px;
+}
+
+.about-know-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  border: 1px solid rgba(94, 234, 212, 0.45);
+  border-radius: 8px;
+  background: rgba(94, 234, 212, 0.08);
+  color: var(--accentColor);
+  padding: 0 18px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.about-know-more:hover {
+  background: rgba(94, 234, 212, 0.16);
+  transform: translateY(-2px);
+}
+
+.about-detail {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 24px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: max-height 0.6s ease, opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.about-detail-open {
+  max-height: 1100px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.about-photo-frame,
+.about-detail-card,
+.education-item {
+  border: 1px solid rgba(94, 234, 212, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(94, 234, 212, 0.035));
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.22);
+}
+
+.about-photo-frame {
+  min-height: 430px;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8) contrast(1.05);
+}
+
+.about-photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(10, 14, 23, 0.92));
+}
+
+.about-photo-frame div {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.about-photo-frame span {
+  color: var(--accentColor);
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.about-photo-frame strong {
+  font-size: 30px;
+}
+
+.about-detail-copy {
+  display: grid;
+  gap: 18px;
+}
+
+.about-detail-card {
+  padding: 28px;
+}
+
+.about-detail-card h4 {
+  font-size: 34px;
+  margin: 0 0 14px;
+}
+
+.about-detail-card p {
+  color: #c7ced4;
+  font-size: 17px;
+  line-height: 28px;
+  margin: 0;
+}
+
+.about-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.about-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #d7fdf8;
+}
+
+.education-timeline {
+  display: grid;
+  gap: 12px;
+}
+
+.education-item {
+  padding: 18px 20px;
+  position: relative;
+}
+
+.education-item::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  border-radius: 20px;
+  background: var(--accentColor);
+}
+
+.education-item span {
+  color: var(--accentColor);
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.education-item h5 {
+  font-size: 22px;
+  margin: 8px 0 4px;
+}
+
+.education-item p,
+.education-item small {
+  display: block;
+  color: #b9c0c6;
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+@media only screen and (min-width: 1025px) {
+  .about-section {
+    max-width: 1920px;
+  }
+
+  .about-me {
+    width: 52%;
+    margin-left: auto;
+  }
+
+  .about-me p {
+    font-size: 1.9vw;
+    line-height: 2.35vw;
+  }
+}
+
+@media only screen and (min-width: 1950px) {
+  .about-me p {
+    font-size: 2.5rem;
+    line-height: 2.9rem;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .about-section {
+    min-height: auto;
+    padding: 70px 0;
+  }
+
+  .about-me p {
+    font-size: 24px;
+    line-height: 31px;
+  }
+
+  .about-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .about-photo-frame {
+    min-height: 320px;
+  }
+}

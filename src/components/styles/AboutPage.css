@@ -1,0 +1,233 @@
+.aboutpage {
+  min-height: 100vh;
+  background-color: var(--backgroundColor);
+  color: #eae5ec;
+  padding: 40px 0 80px;
+  overflow-y: auto;
+}
+
+.aboutpage-header {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+}
+
+.aboutpage-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  border-radius: 8px;
+  background: rgba(94, 234, 212, 0.08);
+  color: var(--accentColor);
+  padding: 0 18px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+  margin-bottom: 30px;
+}
+
+.aboutpage-back:hover {
+  background: rgba(94, 234, 212, 0.18);
+  transform: translateY(-2px);
+}
+
+.aboutpage-header h1 {
+  font-size: 52px;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 30%, var(--accentColor));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.aboutpage-content {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aboutpage-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 28px;
+  margin-bottom: 50px;
+}
+
+.aboutpage-photo-frame,
+.aboutpage-card,
+.aboutpage-summary-card,
+.aboutpage-edu-item {
+  border: 1px solid rgba(94, 234, 212, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(94, 234, 212, 0.035));
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.22);
+}
+
+.aboutpage-photo-frame {
+  min-height: 430px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.aboutpage-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8) contrast(1.05);
+}
+
+.aboutpage-photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(10, 14, 23, 0.92));
+}
+
+.aboutpage-photo-frame div {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.aboutpage-photo-frame span {
+  color: var(--accentColor);
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.aboutpage-photo-frame strong {
+  font-size: 30px;
+}
+
+.aboutpage-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aboutpage-card {
+  padding: 28px;
+}
+
+.aboutpage-card h2 {
+  font-size: 34px;
+  margin: 0 0 14px;
+}
+
+.aboutpage-card p {
+  color: #c7ced4;
+  font-size: 17px;
+  line-height: 28px;
+  margin: 0;
+}
+
+.aboutpage-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.aboutpage-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #d7fdf8;
+}
+
+.aboutpage-summary-card {
+  padding: 28px;
+}
+
+.aboutpage-summary-card h3 {
+  font-size: 22px;
+  margin: 0 0 12px;
+  color: var(--accentColor);
+}
+
+.aboutpage-summary-card p {
+  color: #c7ced4;
+  font-size: 16px;
+  line-height: 26px;
+  margin: 0;
+}
+
+.aboutpage-education {
+  margin-top: 20px;
+}
+
+.aboutpage-education h2 {
+  font-size: 34px;
+  margin: 0 0 24px;
+}
+
+.aboutpage-edu-timeline {
+  display: grid;
+  gap: 14px;
+}
+
+.aboutpage-edu-item {
+  padding: 20px 24px;
+  position: relative;
+}
+
+.aboutpage-edu-item::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  border-radius: 20px;
+  background: var(--accentColor);
+}
+
+.aboutpage-edu-item span {
+  color: var(--accentColor);
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.aboutpage-edu-item h4 {
+  font-size: 22px;
+  margin: 8px 0 4px;
+}
+
+.aboutpage-edu-item p,
+.aboutpage-edu-item small {
+  display: block;
+  color: #b9c0c6;
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+@media only screen and (max-width: 900px) {
+  .aboutpage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .aboutpage-photo-frame {
+    min-height: 300px;
+  }
+
+  .aboutpage-header h1 {
+    font-size: 36px;
+  }
+}
