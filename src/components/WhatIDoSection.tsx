@@ -17,7 +17,7 @@ const WhatIDoSection = () => {
               <h3>AI & MACHINE LEARNING</h3>
               <p className="what-card-sub">Building Intelligent Systems</p>
               <p className="what-card-desc">
-                NLP pipelines, ML models, and AI-powered backends — turning
+                NLP pipelines, ML models, and AI-powered backends - turning
                 research into production-ready applications that solve real
                 problems.
               </p>
@@ -29,7 +29,7 @@ const WhatIDoSection = () => {
               <p className="what-card-sub">Shipping AI in Production</p>
               <p className="what-card-desc">
                 I build the systems behind it: APIs, databases, and full-stack
-                products — production-ready, not slide decks.
+                products - production-ready, not slide decks.
               </p>
             </div>
           </div>

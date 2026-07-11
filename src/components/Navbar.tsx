@@ -1,17 +1,35 @@
-import { useEffect } from "react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { MdClose, MdMenu } from "react-icons/md";
 import "./styles/Navbar.css";
 import { profile } from "../data/portfolio";
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother: ScrollSmoother;
+export let smoother: ScrollSmoother | undefined;
+
+const navItems = [
+  { text: "ABOUT", homeHref: "/about", aboutHref: "/about" },
+  { text: "PROJECTS", homeHref: "#work", aboutHref: "/#work" },
+  { text: "SKILLS", homeHref: "#skills", aboutHref: "/#skills" },
+  { text: "EXPERIENCE", homeHref: "#experience", aboutHref: "/#experience" },
+  { text: "ACHIEVEMENTS", homeHref: "#achievements", aboutHref: "/#achievements" },
+  { text: "CONTACT", homeHref: "#contact", aboutHref: "/#contact" },
+];
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isAboutPage = window.location.pathname.replace(/\/$/, "") === "/about";
+
   useEffect(() => {
-    smoother = ScrollSmoother.create({
+    const wrapper = document.querySelector("#smooth-wrapper");
+    const content = document.querySelector("#smooth-content");
+
+    if (!wrapper || !content) return;
+
+    const createdSmoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
       smooth: 1.7,
@@ -20,29 +38,37 @@ const Navbar = () => {
       autoResize: true,
       ignoreMobileResize: true,
     });
+    smoother = createdSmoother;
 
-    smoother.scrollTop(0);
-    smoother.paused(true);
+    createdSmoother.scrollTop(0);
+    createdSmoother.paused(true);
 
-    let links = document.querySelectorAll(".header ul a");
-    links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
-        }
-      });
-    });
-    window.addEventListener("resize", () => {
+    const onResize = () => {
       ScrollSmoother.refresh(true);
-    });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      createdSmoother.kill();
+      if (smoother === createdSmoother) smoother = undefined;
+    };
   }, []);
+
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    setIsMenuOpen(false);
+
+    if (!isAboutPage && href.startsWith("#") && smoother) {
+      event.preventDefault();
+      smoother.scrollTo(href, true, "top top");
+    }
+  };
+
   return (
     <>
-      <div className="header">
+      <div className={`header${isMenuOpen ? " nav-menu-open" : ""}`}>
         <a href="/#" className="navbar-title" data-cursor="disable">
           {profile.initials}
         </a>
@@ -55,41 +81,31 @@ const Navbar = () => {
         >
           linkedin.com/in/{profile.handle}
         </a>
-        <ul>
-        <li
-          onClick={() => {
-            window.location.href = "/about";
-          }}
+        <button
+          type="button"
+          className="navbar-menu-toggle"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((open) => !open)}
+          data-cursor="disable"
         >
-          <span style={{ cursor: "pointer" }}>
-            <HoverLinks text="ABOUT" />
-          </span>
-        </li>
-          <li>
-            <a data-href="#work" href="#work">
-              <HoverLinks text="PROJECTS" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#skills" href="#skills">
-              <HoverLinks text="SKILLS" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#experience" href="#experience">
-              <HoverLinks text="EXPERIENCE" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#achievements" href="#achievements">
-              <HoverLinks text="ACHIEVEMENTS" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#contact" href="#contact">
-              <HoverLinks text="CONTACT" />
-            </a>
-          </li>
+          {isMenuOpen ? <MdClose /> : <MdMenu />}
+        </button>
+        <ul>
+          {navItems.map((item) => {
+            const href = isAboutPage ? item.aboutHref : item.homeHref;
+            return (
+              <li key={item.text}>
+                <a
+                  data-href={item.homeHref}
+                  href={href}
+                  onClick={(event) => handleNavClick(event, href)}
+                >
+                  <HoverLinks text={item.text} />
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
 

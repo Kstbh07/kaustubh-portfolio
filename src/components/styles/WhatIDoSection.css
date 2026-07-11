@@ -86,10 +86,11 @@
 .what-card-inner {
   padding: 24px 26px;
   border: 1px solid rgba(94, 234, 212, 0.12);
-  border-radius: 4px;
-  background: rgba(10, 14, 23, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(94, 234, 212, 0.04));
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
