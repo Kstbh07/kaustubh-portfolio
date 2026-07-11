@@ -56,11 +56,15 @@ const Navbar = () => {
           linkedin.com/in/{profile.handle}
         </a>
         <ul>
-          <li>
-            <a href="/about">
-              <HoverLinks text="ABOUT" />
-            </a>
-          </li>
+        <li
+          onClick={() => {
+            window.location.href = "/about";
+          }}
+        >
+          <span style={{ cursor: "pointer" }}>
+            <HoverLinks text="ABOUT" />
+          </span>
+        </li>
           <li>
             <a data-href="#work" href="#work">
               <HoverLinks text="PROJECTS" />
