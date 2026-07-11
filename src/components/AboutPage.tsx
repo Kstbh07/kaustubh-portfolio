@@ -168,7 +168,7 @@ const AboutPage = () => {
               <h3 className="aboutpage-hello">
                 Hello, I'm <span>{profile.name}</span>
               </h3>
-              <p className="aboutpage-role">(Full-Stack & AI Developer)</p>
+              <p className="aboutpage-role">(AIML Engineer | Full-Stack Developer | Database Administrator)</p>
               <p className="aboutpage-desc">
                 Hi! I'm {profile.shortName} - a full-stack developer passionate
                 about building scalable applications and weaving AI/ML into
