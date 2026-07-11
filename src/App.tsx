@@ -7,7 +7,7 @@ const MainContainer = lazy(() => import("./components/MainContainer"));
 import { LoadingProvider } from "./context/LoadingProvider";
 
 const App = () => {
-  const isAboutPage = window.location.pathname === "/about";
+  const isAboutPage = window.location.pathname.replace(/\/$/, "") === "/about";
 
   if (isAboutPage) {
     return (

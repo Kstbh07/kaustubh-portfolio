@@ -1,9 +1,10 @@
 .header {
   display: flex;
+  align-items: center;
   max-width: var(--cMaxWidth);
   width: var(--cWidth);
   justify-content: space-between;
-  padding: 20px 0px;
+  padding: 18px 0px;
   margin-bottom: -100px;
   box-sizing: border-box;
   position: fixed;
@@ -12,17 +13,34 @@
   top: 0;
   z-index: 9999;
 }
+
 .header ul {
-  font-size: 12px;
-  display: flex;
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  display: none;
   flex-direction: column;
   margin: 0;
-  padding: 0;
+  padding: 16px;
   list-style: none;
-  column-gap: 40px;
-  row-gap: 8px;
-  align-items: end;
+  row-gap: 4px;
+  align-items: stretch;
+  border: 1px solid rgba(94, 234, 212, 0.18);
+  border-radius: 8px;
+  background: rgba(5, 8, 16, 0.96);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  max-height: calc(100svh - 86px);
+  overflow-y: auto;
+  font-size: 14px;
 }
+
+.header.nav-menu-open ul {
+  display: flex;
+}
+
 .header ul li {
   margin-left: 0px;
   letter-spacing: 1px;
@@ -30,6 +48,13 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.header ul a {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 4px;
+}
+
 .navbar-connect {
   position: absolute;
   display: none;
@@ -45,22 +70,64 @@
   font-size: 14px;
   letter-spacing: 0.2px;
 }
-@media only screen and (min-width: 500px) {
+
+.navbar-menu-toggle {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(94, 234, 212, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #eae5ec;
+  font-size: 26px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media only screen and (min-width: 768px) {
   .header {
     padding: 20px 0px;
   }
+
   .header ul {
+    position: static;
+    display: flex;
     flex-direction: row;
     align-items: center;
+    column-gap: 24px;
+    row-gap: 0;
     font-size: 14px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    max-height: none;
+    overflow: visible;
   }
+
   .header ul li {
     color: #eae5ec;
   }
+
+  .header ul a {
+    padding: 0;
+  }
+
   .navbar-title {
     font-size: 16px;
   }
+
+  .navbar-menu-toggle {
+    display: none;
+  }
 }
+
 @media only screen and (min-width: 900px) {
   .navbar-connect {
     display: none;
@@ -70,13 +137,16 @@
   .header {
     padding: 35px 0px;
   }
+
   .header ul {
     column-gap: 34px;
     font-size: 14px;
   }
+
   .navbar-connect {
     font-size: 14px;
   }
+
   .navbar-title {
     font-size: 18px;
   }

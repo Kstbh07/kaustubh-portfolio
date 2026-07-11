@@ -44,7 +44,7 @@
   z-index: 2;
   margin: 0 auto;
   padding: 100px 0;
-  background: var(--backgroundColor);
+  background: rgba(10, 14, 23, 0.86);
 }
 
 .stats-refresh {
@@ -73,8 +73,10 @@
 .cert-card {
   border: 1px solid rgba(94, 234, 212, 0.18);
   border-radius: 8px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(94, 234, 212, 0.035));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(94, 234, 212, 0.04));
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .stats-card {
@@ -214,12 +216,23 @@
   gap: 4px;
   padding: 18px 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .cf-stat-icon {
-  font-size: 20px;
+  min-width: 36px;
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(94, 234, 212, 0.1);
+  color: var(--accentColor);
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .cf-stat-label {
@@ -489,5 +502,64 @@
   .achievement-card h3 {
     font-size: 30px;
     line-height: 35px;
+  }
+
+  .stats-card {
+    padding: 22px;
+  }
+
+  .stats-hero-row {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .stats-hero {
+    margin: 20px 0 12px;
+  }
+
+  .stats-hero strong {
+    font-size: 44px;
+    line-height: 46px;
+  }
+
+  .difficulty-bar-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .diff-progress {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .stats-chart-canvas {
+    height: 160px;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .portfolio-section-heading h2 {
+    font-size: 34px;
+    line-height: 37px;
+  }
+
+  .portfolio-section-heading p {
+    font-size: 15px;
+  }
+
+  .stats-card {
+    padding: 18px;
+  }
+
+  .stats-card-title {
+    flex-wrap: wrap;
+  }
+
+  .stats-card-title a {
+    margin-left: 0;
+  }
+
+  .cf-stats-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -142,8 +142,8 @@ const Footer = () => {
             <strong>{profile.name}</strong>. All rights reserved.
           </span>
           <span className="footer-copyright-tagline">
-            <span className="footer-terminal-prompt">&gt;</span> Made with
-            Next.js, TypeScript &amp; zero regard for deadlines{" "}
+            <span className="footer-terminal-prompt">&gt;</span> Made with 💖, caffeine & 
+            late night commits &amp; somewhere between bugs and dreams{" "}
             <span className="footer-cursor-blink">█</span>
           </span>
         </div>

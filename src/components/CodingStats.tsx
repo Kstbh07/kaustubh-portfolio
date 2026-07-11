@@ -60,22 +60,40 @@ const drawChart = (
   label: string,
   now: number | null,
   peak: number | null,
+  emptyText: string,
 ) => {
   const ctx = canvas.getContext("2d");
-  if (!ctx || data.length < 2) return;
+  if (!ctx) return;
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
   ctx.scale(dpr, dpr);
   const W = rect.width, H = rect.height;
+  ctx.clearRect(0, 0, W, H);
   const pad = { top: 30, right: 20, bottom: 35, left: 45 };
   const cW = W - pad.left - pad.right, cH = H - pad.top - pad.bottom;
+
+  ctx.fillStyle = "#9ca3af"; ctx.font = "12px Geist, sans-serif"; ctx.textAlign = "left";
+  ctx.fillText(label, pad.left, 18);
+
+  if (data.length === 0) {
+    ctx.strokeStyle = "rgba(255,255,255,0.07)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (cH / 4) * i;
+      ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+    }
+    ctx.fillStyle = "#6b7280"; ctx.font = "13px Geist, sans-serif"; ctx.textAlign = "center";
+    ctx.fillText(emptyText, W / 2, pad.top + cH / 2);
+    return;
+  }
 
   const ratings = data.map(d => d.rating);
   const minR = Math.min(...ratings) - 50;
   const maxR = Math.max(...ratings) + 50;
-  const minT = data[0].date, maxT = data[data.length - 1].date;
+  const minT = data.length === 1 ? data[0].date - 604800 : data[0].date;
+  const maxT = data.length === 1 ? data[0].date + 604800 : data[data.length - 1].date;
 
   const toX = (t: number) => pad.left + ((t - minT) / (maxT - minT)) * cW;
   const toY = (r: number) => pad.top + (1 - (r - minR) / (maxR - minR)) * cH;
@@ -127,9 +145,14 @@ const drawChart = (
   ctx.lineWidth = 2;
   ctx.stroke();
 
+  data.forEach(d => {
+    ctx.beginPath();
+    ctx.fillStyle = lineColor;
+    ctx.arc(toX(d.date), toY(d.rating), data.length === 1 ? 4 : 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
   // Label
-  ctx.fillStyle = "#9ca3af"; ctx.font = "12px Geist, sans-serif"; ctx.textAlign = "left";
-  ctx.fillText(label, pad.left, 18);
   if (now !== null) {
     ctx.fillStyle = "#fff"; ctx.font = "bold 13px Geist, sans-serif";
     ctx.fillText(`now: ${now}`, pad.left + ctx.measureText(label + "  ").width + 10, 18);
@@ -150,13 +173,15 @@ const CodingStats = () => {
   const cfChartRef = useRef<HTMLCanvasElement>(null);
 
   const renderCharts = useCallback(() => {
-    if (lcChartRef.current && stats.lcContests.length > 1) {
+    if (lcChartRef.current) {
       drawChart(lcChartRef.current, stats.lcContests, "#f59e0b", "CONTEST RATING",
-        stats.leetcode.contestRating, stats.lcContests.length > 0 ? Math.max(...stats.lcContests.map(c => c.rating)) : null);
+        stats.leetcode.contestRating, stats.lcContests.length > 0 ? Math.max(...stats.lcContests.map(c => c.rating)) : null,
+        "No LeetCode contest history yet");
     }
-    if (cfChartRef.current && stats.cfContests.length > 1) {
+    if (cfChartRef.current) {
       drawChart(cfChartRef.current, stats.cfContests, "#22c55e", "RATING HISTORY",
-        stats.codeforces.rating, stats.codeforces.maxRating);
+        stats.codeforces.rating, stats.codeforces.maxRating,
+        "No rated Codeforces contests yet");
     }
   }, [stats]);
 
@@ -171,7 +196,8 @@ const CodingStats = () => {
     const load = async () => {
       setIsLoading(true);
       const next = emptyStats();
-      const [lcSolved, lcContest, cfUser, cfRating, cfSub] = await Promise.allSettled([
+      const [lcProfile, lcSolved, lcContest, cfUser, cfRating, cfSub] = await Promise.allSettled([
+        fetchJson<any>(`https://alfa-leetcode-api.onrender.com/userProfile/${profile.leethandle}`),
         fetchJson<any>(`https://alfa-leetcode-api.onrender.com/${profile.leethandle}/solved`),
         fetchJson<any>(`https://alfa-leetcode-api.onrender.com/${profile.leethandle}/contest`),
         fetchJson<any>(`https://codeforces.com/api/user.info?handles=${profile.handle}`),
@@ -179,41 +205,56 @@ const CodingStats = () => {
         fetchJson<any>(`https://codeforces.com/api/user.status?handle=${profile.handle}`),
       ]);
 
-      if (lcSolved.status === "fulfilled") {
-        const d = lcSolved.value;
-        next.leetcode.totalSolved = d.solvedProblem ?? null;
+      if (lcProfile.status === "fulfilled") {
+        const d = lcProfile.value;
+        next.leetcode.totalSolved = d.totalSolved ?? null;
         next.leetcode.easySolved = d.easySolved ?? null;
         next.leetcode.mediumSolved = d.mediumSolved ?? null;
         next.leetcode.hardSolved = d.hardSolved ?? null;
         next.leetcode.ranking = d.ranking ?? null;
-        next.leetcode.totalEasy = d.totalEasy ?? 953;
-        next.leetcode.totalMedium = d.totalMedium ?? 2081;
-        next.leetcode.totalHard = d.totalHard ?? 951;
+        next.leetcode.totalEasy = d.totalEasy ?? null;
+        next.leetcode.totalMedium = d.totalMedium ?? null;
+        next.leetcode.totalHard = d.totalHard ?? null;
+      }
+
+      if (lcSolved.status === "fulfilled") {
+        const d = lcSolved.value;
+        next.leetcode.totalSolved = d.solvedProblem ?? next.leetcode.totalSolved;
+        next.leetcode.easySolved = d.easySolved ?? next.leetcode.easySolved;
+        next.leetcode.mediumSolved = d.mediumSolved ?? next.leetcode.mediumSolved;
+        next.leetcode.hardSolved = d.hardSolved ?? next.leetcode.hardSolved;
+        next.leetcode.ranking = d.ranking ?? next.leetcode.ranking;
+        next.leetcode.totalEasy = d.totalEasy ?? next.leetcode.totalEasy ?? 953;
+        next.leetcode.totalMedium = d.totalMedium ?? next.leetcode.totalMedium ?? 2081;
+        next.leetcode.totalHard = d.totalHard ?? next.leetcode.totalHard ?? 951;
       }
 
       if (lcContest.status === "fulfilled") {
         const d = lcContest.value;
-        next.leetcode.contestRating = d.contestRating ? Math.round(d.contestRating) : null;
         if (d.contestParticipation && Array.isArray(d.contestParticipation)) {
           next.lcContests = d.contestParticipation.map((c: any) => ({
             date: c.contest?.startTime ?? 0,
             rating: Math.round(c.rating ?? 0),
-          })).filter((c: ContestEntry) => c.date > 0);
+          })).filter((c: ContestEntry) => c.date > 0).sort((a: ContestEntry, b: ContestEntry) => a.date - b.date);
         }
+        const latestContest = next.lcContests[next.lcContests.length - 1];
+        next.leetcode.contestRating = d.contestRating
+          ? Math.round(d.contestRating)
+          : latestContest?.rating ?? null;
       }
 
       if (cfUser.status === "fulfilled" && cfUser.value.status === "OK") {
         const u = cfUser.value.result?.[0];
         next.codeforces.rating = u?.rating ?? null;
         next.codeforces.maxRating = u?.maxRating ?? null;
-        next.codeforces.rank = u?.rank ?? null;
+        next.codeforces.rank = u?.rank ?? "unrated";
       }
 
       if (cfRating.status === "fulfilled" && cfRating.value.status === "OK") {
         next.cfContests = (cfRating.value.result || []).map((c: any) => ({
           date: c.ratingUpdateTimeSeconds ?? 0,
           rating: c.newRating ?? 0,
-        }));
+        })).filter((c: ContestEntry) => c.date > 0).sort((a: ContestEntry, b: ContestEntry) => a.date - b.date);
       }
 
       if (cfSub.status === "fulfilled" && cfSub.value.status === "OK") {
@@ -243,7 +284,7 @@ const CodingStats = () => {
       <div className="portfolio-section-heading">
         <span>Live Data</span>
         <h2>Live <strong>Coding Stats</strong></h2>
-        <p>Pulled live from LeetCode & Codeforces — real numbers, not claims.</p>
+        <p>Pulled live from LeetCode and Codeforces - real numbers, not claims.</p>
         <button type="button" className="stats-refresh" onClick={() => setRefreshKey(v => v + 1)} data-cursor="disable">
           <MdRefresh /> {isLoading ? "Refreshing" : "Refresh"}
         </button>
@@ -262,12 +303,6 @@ const CodingStats = () => {
               <strong>{fmt(lc.totalSolved)}</strong>
               <span>solved</span>
             </div>
-            {lc.contestRating && (
-              <div className="stats-hero stats-hero-secondary">
-                <strong>{fmt(lc.contestRating)}</strong>
-                <span>contest rating</span>
-              </div>
-            )}
           </div>
           <div className="difficulty-bars">
             <div className="difficulty-bar-row">
@@ -305,22 +340,22 @@ const CodingStats = () => {
           </div>
           <div className="cf-stats-grid">
             <div className="cf-stat-box">
-              <span className="cf-stat-icon">🏆</span>
+              <span className="cf-stat-icon">AC</span>
               <span className="cf-stat-label">Solved</span>
               <strong>{fmt(cf.solved)}</strong>
             </div>
             <div className="cf-stat-box">
-              <span className="cf-stat-icon">📈</span>
+              <span className="cf-stat-icon">RT</span>
               <span className="cf-stat-label">Rating</span>
               <strong>{fmt(cf.rating)}</strong>
             </div>
             <div className="cf-stat-box">
-              <span className="cf-stat-icon">⭐</span>
+              <span className="cf-stat-icon">MAX</span>
               <span className="cf-stat-label">Max rating</span>
               <strong>{fmt(cf.maxRating)}</strong>
             </div>
             <div className="cf-stat-box">
-              <span className="cf-stat-icon">🏅</span>
+              <span className="cf-stat-icon">RK</span>
               <span className="cf-stat-label">Rank</span>
               <strong>{fmt(cf.rank)}</strong>
             </div>
