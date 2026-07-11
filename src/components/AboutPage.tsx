@@ -158,7 +158,7 @@ const AboutPage = () => {
         <div className="aboutpage-grid">
           <div className="aboutpage-left">
             <div className="aboutpage-photo-frame">
-              <img src="/images/kaustubh-profile.jpg" alt={profile.name} />
+              <img src="/images/kaustubh-profile.jpeg" alt={profile.name} />
             </div>
           </div>
 

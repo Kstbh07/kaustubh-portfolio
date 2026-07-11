@@ -303,12 +303,6 @@ const CodingStats = () => {
               <strong>{fmt(lc.totalSolved)}</strong>
               <span>solved</span>
             </div>
-            {lc.contestRating && (
-              <div className="stats-hero stats-hero-secondary">
-                <strong>{fmt(lc.contestRating)}</strong>
-                <span>contest rating</span>
-              </div>
-            )}
           </div>
           <div className="difficulty-bars">
             <div className="difficulty-bar-row">
